@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -31,16 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\~Games\KSP_win_PluginTest_Prerelease\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\Desktop\KSP_osx 1.05\KSP.app\Contents\Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\~Games\KSP_win_PluginTest_Prerelease\KSP_Data\Managed\UnityEngine.dll</HintPath>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\Desktop\KSP_osx 1.05\KSP.app\Contents\Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -76,71 +74,6 @@
     <Compile Include="TWPWindowWorkerLongRun.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>rem Set the Variables we need
-echo Finding KSP
-if exist "R:\~Games\KSP_Win_PlugInTest_Minimal\KSP.exe" (
-	set GAMEPATH="R:\~Games\KSP_Win_PlugInTest_Minimal"
-) else if exist "D:\~Games\KSP_Win_PlugInTest_Minimal\KSP.exe" (
-	set GAMEPATH="D:\~Games\KSP_Win_PlugInTest_Minimal"
-) else if exist "C:\~Games\KSP_Win_PlugInTest_Minimal\KSP.exe" (
-	set GAMEPATH="C:\~Games\KSP_Win_PlugInTest_Minimal
-) else if exist "D:\~Games\KSP_Win_PlugInTest\KSP.exe" (
-	set GAMEPATH="D:\~Games\KSP_Win_PlugInTest"
-) else if exist "C:\~Games\KSP_Win_PlugInTest\KSP.exe" (
-	set GAMEPATH="C:\~Games\KSP_Win_PlugInTest"
-)else (
-	echo "Cant find KSP"
-	exit 1
-)
-
-echo Gamepath: %25GAMEPATH%25
-echo ConfigName: $(ConfigurationName)
-set DestPath="%25GAMEPATH%25\GameData\TriggerTech\$(ProjectName)"
-set Binary="%25GAMEPATH%25\KSP.exe"
-
-if not $(ConfigurationName)==Debug goto DEBUGREBUILDCONFIG
-:DEBUGCONFIG
-rem Copy DLL and run KSP
-
-copy "$(TargetPath)" "%25DestPath%25"
-rem copy "$(TargetDir)$(TargetName).pdb" "%25DestPath%25"
-rem "C:\Program Files (x86)\Unity\Editor\Data\MonoBleedingEdge\bin\cli.bat" "C:\Program Files (x86)\Unity\Editor\Data\MonoBleedingEdge\lib\mono\4.0\pdb2mdb.exe" "%25DestPath%25\$(TargetFileName)"
-
-rem and then run the game
-if exist "$(ProjectDir)..\..\StartX.exe" goto STARTX
-echo Running Directly
-"%25Binary%25"
-goto END
-
-:STARTX
-echo STARTX running
-"$(ProjectDir)..\..\StartX.exe" "%25Binary%25"
-goto END
-"%25Binary%25"
-
-goto END
-
-:DEBUGREBUILDCONFIG
-if not $(ConfigurationName)==DebugAndRebuild goto END
-rem This one will empty the dest folder and copy all the source files
-
-rem Delete the folder and recreate it
-rmdir /s /q "%25DestPath%25"
-mkdir "%25DestPath%25"
-
-rem Nowcopy all the files from the pluginfiles source
-xcopy "%25SourcePath%25\*.*" "%25DestPath%25" /SE
-rem and copy the new dll
-copy "$(TargetPath)" "%25DestPath%25"
-
-rem and then run the game
-"%25Binary%25"
-
-goto END
-
-:END</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
